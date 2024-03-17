@@ -1,7 +1,8 @@
-﻿using Islamabad.pageObjects;
-using Islamabad.utilities;
+﻿using Shopist.pageObjects;
+using Shopist.utilities;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.Extensions;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -13,31 +14,42 @@ using WDSE;
 using WDSE.Decorators;
 using WDSE.ScreenshotMaker;
 
-namespace Islamabad.tests
+namespace Shopist.tests
 {
     public class TestTwo : Base
     {
         [Test, Category("Smoke")]
-        public void RegisteredUserLogInFlow()
+        public void ItemOutStock()
         {
-            HomePage homePage2 = new HomePage(getDriver());
 
-            homePage2.okButton().Click();
-            homePage2.typeSel().Click();
+            StockOut checkStock = new StockOut(getDriver());
+            checkStock.validCheck();
+        }
 
-            ProfilePage profilePage = new ProfilePage(getDriver());
+        [Test, Category("Smoke")]
+        public void CheckOutProcess()
+        {
+            CheckOut checkout = new CheckOut(getDriver());
+            checkout.AddingItemToCart();
+            checkout.ContinueButton().Click();
 
-            profilePage.goToLogin().Click();
-            profilePage.validLogin("sarmed.mujaddid@gmail.com", "123456789");
+        }
 
-            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+        [Test, Category("Smoke")]
 
-            js.ExecuteScript("document.querySelector('#fashion > div.fashion-header > div.right-items > customer-widget').shadowRoot.querySelector('div.customer-widget').click();");
-            Thread.Sleep(1000);
-            js.ExecuteScript("document.querySelector('#fashion > div.fashion-header > div.right-items > customer-widget').shadowRoot.querySelector('div.customer-menu.active > div.menu-items > a:nth-child(1) > img').click();");
+        public void IncrementItem()
+        {
+            CheckOut checkOutIncrement = new CheckOut(getDriver());
+            checkOutIncrement.IncrementItem();
 
-            homePage2.dBField().Click();
-            // Use the VerticalCombineDecorator to capture entire page:
+        }
+
+        [Test, Category("Smoke")]
+        public void DecrementItem()
+        {
+            CheckOut checkOutDecrement = new CheckOut(getDriver());
+            checkOutDecrement.DecrementItem();
+
         }
     }
 }

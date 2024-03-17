@@ -1,73 +1,151 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.PageObjects;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Islamabad.pageObjects
+namespace Shopist.pageObjects
 {
     public class ProfilePage
     {
         private IWebDriver driver;
-        private IJavaScriptExecutor js;
+
         public ProfilePage(IWebDriver driver)
         {
             this.driver = driver;
             PageFactory.InitElements(driver, this);
-            this.js = (IJavaScriptExecutor)driver;
-
             //this refers to current class objects
-
         }
 
+        //Pageobject Factory
 
-        [FindsBy(How = How.XPath, Using = "//input[@class='input au-target flatpickr-input active']")]
-        private IWebElement dateBirth;
+        //[FindsBy(How = How.XPath, Using = "//div[@class='menu-item-large'][normalize-space()='My Profile']")]
+        [FindsBy(How = How.CssSelector, Using = "a[class='profile'] div[class='menu-item-large']")]
+        private IWebElement profileBtn;
 
-        [FindsBy(How = How.XPath, Using = "//*[@id='interstitial-main']/div[3]/div[1]/button")]
-        private IWebElement logIn;
+        [FindsBy(How = How.XPath, Using = "//a[@class='button']")]
+        private IWebElement editBtn;
 
-        [FindsBy(How = How.XPath, Using = "//input[@id='interstitial-login-email-input']")]
-        private IWebElement emailID;
+        [FindsBy(How = How.Id, Using = "address1")]
+        private IWebElement addField;
 
-        [FindsBy(How = How.XPath, Using = "//input[@id='interstitial-login-password-input']")]
-        private IWebElement passWord1;
+        [FindsBy(How = How.Id, Using = "address2")]
+        private IWebElement addTwo;
 
-        [FindsBy(How = How.XPath, Using = "//button[@id='interstitial-login-button']")]
-        private IWebElement loginBtn;
+        [FindsBy(How = How.Id, Using = "addressCity")]
+        private IWebElement cityField;
 
-       
-        public IWebElement dBField()
+        [FindsBy(How = How.CssSelector, Using = "input[type='search']")]
+        private IWebElement stateField;
+
+        [FindsBy(How = How.Id, Using = "addressZipcode")]
+        private IWebElement zipField;
+
+        [FindsBy(How = How.XPath, Using = "//button[@class='button big inverted']")]
+        private IWebElement saveBtn;
+
+        [FindsBy(How = How.CssSelector, Using = ".success.banner")]
+        private IWebElement successMge;
+
+        // Methods
+
+        public IWebElement profileButton()
         {
-            return dateBirth;
+            return profileBtn;                // Concept of Encapsulation
         }
-        public IWebElement goToLogin()
+
+        public IWebElement editProfile()
         {
-            return logIn;
+            return editBtn;              // Concept of Encapsulation
         }
-
-        public IWebElement GetUser()
+        public IWebElement addressField()
         {
-            return (IWebElement)js.ExecuteScript("return document.querySelector('#fashion > div.fashion-header > div.right-items > customer-widget').shadowRoot.querySelector('div.customer-widget');");
-
+            return addField;           // Concept of Encapsulation 
         }
 
-        //public IWebElement GetUserEmail()
-        //{
-
-        //return (IWebElement)js.ExecuteScript("return document.querySelector('#fashion > div.fashion-header > div.right-items > customer-widget').shadowRoot.querySelector('div.customer-menu.no-login.active .email-input input[type=email]');");  
-
-        //}
-
-        //public IWebElement GetUserPass()
-        //{
-        //    return (IWebElement)js.ExecuteScript("return document.querySelector('#fashion > div.fashion-header > div.right-items > customer-widget').shadowRoot.querySelector('div.customer-menu.no-login.active .password-input input[type=password]');");
-
-        //}
-        public void validLogin(String email, String pass)
+        public IWebElement addressTwo()
         {
-            emailID.SendKeys(email);          // Concept of Encapsulation 
-            passWord1.SendKeys(pass);
-            loginBtn.Click();
+            return addTwo;           // Concept of Encapsulation 
+        }
+        public IWebElement cityAddress()
+        {
+            return cityField;
         }
 
+        public IWebElement stateAddress()
+        {
+
+            return stateField;
+        }
+
+        public void SelectStateAddress(string state)
+        {
+            stateAddress().Click();
+            SelectElement selectElement = new SelectElement(stateAddress());
+            selectElement.SelectByText(state);
+
+        }
+
+        public IWebElement zipAddress()
+        {
+            return zipField;
+        }
+
+        public IWebElement saveButton()
+        {
+            return saveBtn;
+        }
+
+        public IWebElement successMessage()
+        {
+            return successMge;
+        }
+
+        public void updateProfile(string address, string addresstwo, string city, string state, string zip)
+        {
+            Thread.Sleep(10);
+            profileButton().Click();
+            editProfile().Click();
+            addressField().Click();
+            addressField().Clear();
+            addressField().SendKeys(address);
+            addressTwo().Click();
+            addressTwo().Clear();
+            addressTwo().SendKeys(addresstwo);
+            cityAddress().Click();
+            cityAddress().Clear();
+            cityAddress().SendKeys(city);
+            stateAddress().Click();
+            stateAddress().SendKeys(state);
+            zipAddress().Click();
+            zipAddress().Clear();
+            zipAddress().SendKeys(zip);
+            saveButton().Click();
+            successMessage().Click();
+
+        }
+
+        public bool IsSuccessMessageDisplayed(string expectedMessage)
+        {
+            try
+            {
+                IWebElement successMessageElement = driver.FindElement(By.CssSelector(".success.banner"));
+
+                if (successMessageElement != null)
+                {
+                    string actualMessage = successMessageElement.Text;
+                    return actualMessage.Contains(expectedMessage);
+                }
+            }
+            catch (NoSuchElementException)
+            {
+                return false;
+            }
+
+            return false;
+        }
     }
 }
-

@@ -10,7 +10,7 @@ using System.Configuration;
 using System.Reactive.Concurrency;
 using WebDriverManager.DriverConfigs.Impl;
 
-namespace Islamabad.utilities
+namespace Shopist.utilities
 {
     public class Base
     {
@@ -18,6 +18,8 @@ namespace Islamabad.utilities
         public ExtentReports extent;
         public ExtentTest test;
         public IWebDriver driver;
+
+        String browserName;
 
         //report file
 
@@ -48,16 +50,10 @@ namespace Islamabad.utilities
             String browserName = ConfigurationManager.AppSettings["browser"];
             InitBrowser(browserName);
 
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(1);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
 
             driver.Manage().Window.Maximize();
-            driver.Url = "https://www.newyorker.de";
-
-            // Assuming driver is your WebDriver instance - Cookies Acceptance
-            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
-
-            // Execute JavaScript code to find and interact with an element inside the Shadow DOM
-            js.ExecuteScript("document.querySelector('#fashion > cookie-banner').shadowRoot.querySelector('div > div.cookie-banner-controls > button:nth-child(1)').click();");
+            driver.Url = "https://shopist.io/";
         }
 
         public IWebDriver getDriver()
@@ -104,20 +100,16 @@ namespace Islamabad.utilities
 
                 test.Fail("Test is failing!", captureScreenShot(driver, fileName));
                 test.Log(Status.Fail, "Test failed with logtrace" + stackTrace);
+                driver.Quit();
 
             }
             else if (status == TestStatus.Passed)
             {
+                test.Pass("Test is Passed!");
                 extent.Flush();
                 driver.Quit();
             }
         }
-
-        //public static JsonReader getDataParser()
-        //{
-        //    return new JsonReader();
-        //}
-
         public MediaEntityModelProvider captureScreenShot(IWebDriver driver, String screenShotName)
 
         {
@@ -125,6 +117,5 @@ namespace Islamabad.utilities
             var screenshot = ts.GetScreenshot().AsBase64EncodedString;
             return MediaEntityBuilder.CreateScreenCaptureFromBase64String(screenshot, screenShotName).Build();
         }
-
     }
 }
