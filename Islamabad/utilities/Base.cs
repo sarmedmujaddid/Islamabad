@@ -1,20 +1,18 @@
 ﻿using AventStack.ExtentReports;
 using AventStack.ExtentReports.Reporter;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using NUnit.Framework.Interfaces;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
 using System.Configuration;
-using System.Reactive.Concurrency;
 using WebDriverManager.DriverConfigs.Impl;
 
 namespace Shopist.utilities
 {
     public class Base
     {
-    
+
         public ExtentReports extent;
         public ExtentTest test;
         public IWebDriver driver;
@@ -86,7 +84,7 @@ namespace Shopist.utilities
             }
         }
 
-        [TearDown] 
+        [TearDown]
         public void AfterTest()
         {
             var status = TestContext.CurrentContext.Result.Outcome.Status;

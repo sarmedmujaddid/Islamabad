@@ -1,10 +1,5 @@
 ﻿using OpenQA.Selenium;
 using SeleniumExtras.PageObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Shopist.pageObjects
 {
@@ -109,7 +104,7 @@ namespace Shopist.pageObjects
             SelectItem().Click();
             AddCart().Click();
             GoToCart().Click();
-            GoToCheckOut().Click();   
+            GoToCheckOut().Click();
         }
 
         public void RemoveItemFromCart()
@@ -129,14 +124,14 @@ namespace Shopist.pageObjects
             GoToCart().Click();
             IncrementButton().Click();
             GoToCheckOut().Click();
-            ContinueButton().Click();    
+            ContinueButton().Click();
 
         }
 
         public void DecrementItem()
         {
             ShopButton().Click();
-            SelectItem().Click(); 
+            SelectItem().Click();
             AddCart().Click();
             GoToCart().Click();
             DecrementButton().Click();

@@ -14,7 +14,7 @@ namespace Shopist.pageObjects
             //this refers to current class objects
         }
 
-        
+
         [FindsBy(How = How.XPath, Using = "//div[@class='serif'][normalize-space()='Chairs']")]
         //[FindsBy(How = How.XPath, Using = "//div[@class='jumbotron-box']//div[contains(text(),'Shop now')]")]
         private IWebElement shopBtn;
@@ -28,7 +28,7 @@ namespace Shopist.pageObjects
         [FindsBy(How = How.XPath, Using = "//div[@class='modal-button']")]
         private IWebElement modBtn;
 
-       
+
         public IWebElement shopButton()
         {
             return shopBtn;
